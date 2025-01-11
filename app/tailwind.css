@@ -147,28 +147,54 @@ article:hover {
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
-}
 
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
+  @keyframes techFloat {
+    0% {
+      transform: translate(-50%, -50%) translateY(0px) rotate(0deg);
+    }
+    25% {
+      transform: translate(-50%, -50%) translateY(-15px) rotate(5deg);
+    }
+    50% {
+      transform: translate(-50%, -50%) translateY(0px) rotate(0deg);
+    }
+    75% {
+      transform: translate(-50%, -50%) translateY(15px) rotate(-5deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) translateY(0px) rotate(0deg);
+    }
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
-@keyframes float {
-  0% {
-    transform: translateY(0px);
+  .tech-icon {
+    transition: opacity 0.3s ease-in-out;
   }
-  50% {
-    transform: translateY(-20px);
+
+  .tech-icon:hover {
+    opacity: 0.8;
   }
-  100% {
-    transform: translateY(0px);
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
   }
 }
