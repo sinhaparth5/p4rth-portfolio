@@ -10,3 +10,119 @@ body {
     color-scheme: dark;
   }
 }
+
+@layer components {
+  .psConInner {
+    @apply flex justify-center items-center;
+  }
+
+  .psBlogCon {
+    @apply absolute inset-0 bg-pink-500 bg-repeat-y bg-[length:95%_95%] opacity-90;
+  }
+
+  .psBlogConInner {
+    @apply relative z-10 max-w-6xl mx-auto pb-16;
+  }
+
+  .psGrid {
+    @apply grid gap-6 md:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .psGridCard {
+    @apply glass-card border border-gray-800 rounded-lg overflow-hidden transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.6)];
+  }
+
+  .psCardName {
+    @apply text-xl font-semibold mb-2 text-white group-hover:text-blue-400 transition-colors dm-sans-bold;
+  }
+
+  .psCardDate {
+    @apply text-sm text-gray-400 mb-4 block dm-sans-normal;
+  }
+
+  .psCardXT {
+    @apply flex flex-wrap gap-2 mt-3;
+  }
+
+  .psCardTags {
+    @apply glass-tag px-2 py-1 text-xs text-gray-300 rounded-full dm-sans-normal border border-gray-700 shadow-lg;
+  }
+
+  .psNoRepo {
+    @apply glass-card text-center py-12 rounded-lg border border-gray-800 shadow-[0_4px_20px_rgba(0,0,0,0.4)];
+  }
+
+  .psNoRepoText {
+    @apply text-gray-400 dm-sans-normal;
+  }
+
+  .psHeaderText {
+    @apply text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl;
+  }
+}
+
+/* Glass tag styles */
+.glass-tag {
+  background-color: rgba(31, 41, 55, 0.5);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+article {
+  transition: transform 0.2s ease-in-out, background-color 0.3s ease;
+}
+
+article:hover {
+  transform: translateY(-2px);
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Safari-specific fixes */
+@supports (-webkit-backdrop-filter: none) {
+  .glass-card {
+      background-color: rgba(0, 0, 0, 0.75);
+  }
+  
+  .glass-tag {
+      background-color: rgba(31, 41, 55, 0.75);
+  }
+}
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
+  .glass-card {
+      background-color: rgba(0, 0, 0, 0.85);
+  }
+  
+  .glass-tag {
+      background-color: rgba(31, 41, 55, 0.85);
+  }
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.dm-sans-bold {
+  font-family: "DM Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.dm-sans-normal {
+  font-family: "DM Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.dm-sans-semibold {
+  font-family: "DM Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
