@@ -1,6 +1,14 @@
 import { json, useLoaderData } from "@remix-run/react";
 import { getMediumArticles } from "~/services/medium.server";
 import { Link } from "@remix-run/react";
+import { MetaFunction } from "@remix-run/node";
+
+export const meta: MetaFunction = () => {
+    return [
+        { title: "Blogs" },
+        { name: "description", content: "This is blogs for Medium articles" }
+    ]
+}
 
 interface LoaderData {
     articles: Array<{
