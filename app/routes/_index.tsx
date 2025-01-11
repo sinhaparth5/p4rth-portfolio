@@ -1,7 +1,6 @@
 import { json, type MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { ClientOnly } from "remix-utils/client-only";
-import FloatingTechIcons from "~/components/FloatingIcons";
 import HomeScene from "~/components/HomeScene";
 
 export const meta: MetaFunction = () => {
@@ -41,13 +40,9 @@ export default function Index() {
         {() => <HomeScene />}
       </ClientOnly>
 
-      <ClientOnly>
-        {() => <FloatingTechIcons />}
-      </ClientOnly>
-
       <div className="relative z-10">
         {/* Hero Section */}
-        <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center backdrop-blur-sm">
+        <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
           <div className="animate-float">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500">
               {data.title}

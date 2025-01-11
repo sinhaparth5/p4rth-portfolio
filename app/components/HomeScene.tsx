@@ -2,13 +2,60 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+const techIcons = [
+  { name: 'django', size: 1.2 },
+  { name: 'angular', size: 1.3 },
+  { name: 'docker', size: 1.2 },
+  { name: 'kubernetes', size: 1.1 },
+  { name: 'pytorch', size: 1.2 },
+  { name: 'tensorflow', size: 1.3 },
+  { name: 'spring', size: 1.2 },
+];
+
+// Function to calculate spacing based on screen size
+const calculateSpacing = () => {
+  const width = window.innerWidth;
+  if (width < 640) { // mobile
+    return {
+      spread: 10,
+      particleSpread: 30,
+      cameraDistance: 15
+    };
+  } else if (width < 1024) { // tablet
+    return {
+      spread: 15,
+      particleSpread: 40,
+      cameraDistance: 20
+    };
+  } else { // desktop
+    return {
+      spread: 20,
+      particleSpread: 50,
+      cameraDistance: 25
+    };
+  }
+};
+
+// Function to generate a spherical position
+const generateSphericalPosition = (spread: number, index: number, total: number) => {
+  const phi = Math.acos(-1 + (2 * index) / total);
+  const theta = Math.sqrt(total * Math.PI) * phi;
+  
+  return {
+    x: spread * Math.cos(theta) * Math.sin(phi),
+    y: spread * Math.sin(theta) * Math.sin(phi),
+    z: spread * Math.cos(phi)
+  };
+};
+
 export default function HomeScene() {
     const mountRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!mountRef.current) return;
+        
+        let spacing = calculateSpacing();
     
-        // Scene setup
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -17,7 +64,6 @@ export default function HomeScene() {
         renderer.setClearColor(0x000000, 0);
         mountRef.current.appendChild(renderer.domElement);
     
-        // Controls
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
@@ -25,19 +71,17 @@ export default function HomeScene() {
         controls.autoRotate = true;
         controls.autoRotateSpeed = 0.5;
     
-        // Create particles
+        // Create particles with adjusted spread
         const particlesGeometry = new THREE.BufferGeometry();
         const particlesCount = 2000;
         const positions = new Float32Array(particlesCount * 3);
         const particleColors = new Float32Array(particlesCount * 3);
     
         for(let i = 0; i < particlesCount * 3; i += 3) {
-          // Positions
-          positions[i] = (Math.random() - 0.5) * 50;
-          positions[i + 1] = (Math.random() - 0.5) * 50;
-          positions[i + 2] = (Math.random() - 0.5) * 50;
+          positions[i] = (Math.random() - 0.5) * spacing.particleSpread;
+          positions[i + 1] = (Math.random() - 0.5) * spacing.particleSpread;
+          positions[i + 2] = (Math.random() - 0.5) * spacing.particleSpread;
     
-          // Colors
           particleColors[i] = Math.random();
           particleColors[i + 1] = Math.random();
           particleColors[i + 2] = Math.random();
@@ -56,35 +100,40 @@ export default function HomeScene() {
     
         const particles = new THREE.Points(particlesGeometry, particlesMaterial);
         scene.add(particles);
-    
-        // Neural network nodes
-        const nodes: THREE.Mesh[] = [];
+
+        // Create sprites with spherical distribution
+        const nodes: THREE.Object3D[] = [];
         const connections: THREE.Line[] = [];
-        const nodesGeometry = new THREE.SphereGeometry(0.3, 32, 32);
+        const textureLoader = new THREE.TextureLoader();
         
-        // Create nodes with different colors and glowing effect
-        const nodeColors = [0xff3366, 0x33ff66, 0x3366ff, 0xff6633, 0x66ff33];
-        for (let i = 0; i < 15; i++) {
-          const material = new THREE.MeshPhongMaterial({
-            color: nodeColors[i % nodeColors.length],
-            shininess: 100,
-            emissive: nodeColors[i % nodeColors.length],
-            emissiveIntensity: 0.3,
+        techIcons.forEach((icon, index) => {
+          const texture = textureLoader.load(`/icons/${icon.name}.svg`);
+          texture.colorSpace = THREE.SRGBColorSpace;
+          
+          const spriteMaterial = new THREE.SpriteMaterial({
+            map: texture,
+            transparent: true,
+            opacity: 0.8,
           });
-          const node = new THREE.Mesh(nodesGeometry, material);
-          node.position.set(
-            (Math.random() - 0.5) * 15,
-            (Math.random() - 0.5) * 15,
-            (Math.random() - 0.5) * 15
-          );
-          nodes.push(node);
-          scene.add(node);
-        }
+
+          const sprite = new THREE.Sprite(spriteMaterial);
+          
+          // Scale icons based on screen size
+          const scaleFactor = window.innerWidth < 640 ? 0.8 : 1;
+          sprite.scale.set(icon.size * scaleFactor, icon.size * scaleFactor, 1);
+          
+          // Position using spherical distribution
+          const position = generateSphericalPosition(spacing.spread, index, techIcons.length);
+          sprite.position.set(position.x, position.y, position.z);
+          
+          nodes.push(sprite);
+          scene.add(sprite);
+        });
     
-        // Create glowing connections between nodes
+        // Create connections with adjusted material
         const lineMaterial = new THREE.LineBasicMaterial({ 
           color: 0x00ffff,
-          opacity: 0.3,
+          opacity: 0.2, // Reduced opacity for better visibility
           transparent: true,
           blending: THREE.AdditiveBlending,
         });
@@ -101,45 +150,43 @@ export default function HomeScene() {
           }
         });
     
-        // Add lights
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
     
-        const pointLight1 = new THREE.PointLight(0xff3366, 2, 50);
-        pointLight1.position.set(10, 10, 10);
+        const pointLight1 = new THREE.PointLight(0xff3366, 2, spacing.spread * 3);
+        pointLight1.position.set(spacing.spread / 2, spacing.spread / 2, spacing.spread / 2);
         scene.add(pointLight1);
     
-        const pointLight2 = new THREE.PointLight(0x3366ff, 2, 50);
-        pointLight2.position.set(-10, -10, -10);
+        const pointLight2 = new THREE.PointLight(0x3366ff, 2, spacing.spread * 3);
+        pointLight2.position.set(-spacing.spread / 2, -spacing.spread / 2, -spacing.spread / 2);
         scene.add(pointLight2);
     
-        // Position camera
-        camera.position.z = 20;
+        camera.position.z = spacing.cameraDistance;
     
-        // Floating animation variables
         const initialPositions = nodes.map(node => ({
           x: node.position.x,
           y: node.position.y,
           z: node.position.z
         }));
     
-        // Animation
         function animate() {
           requestAnimationFrame(animate);
     
-          // Rotate particles
           particles.rotation.x += 0.0002;
           particles.rotation.y += 0.0001;
     
-          // Animate nodes
           nodes.forEach((node, i) => {
             const time = Date.now() * 0.001;
-            node.position.x = initialPositions[i].x + Math.sin(time + i) * 0.5;
-            node.position.y = initialPositions[i].y + Math.cos(time + i) * 0.5;
-            node.position.z = initialPositions[i].z + Math.sin(time + i) * 0.3;
+            node.position.x = initialPositions[i].x + Math.sin(time + i) * (spacing.spread * 0.03);
+            node.position.y = initialPositions[i].y + Math.cos(time + i) * (spacing.spread * 0.03);
+            node.position.z = initialPositions[i].z + Math.sin(time + i) * (spacing.spread * 0.02);
+            
+            if (node instanceof THREE.Sprite) {
+              const spriteMaterial = node.material as THREE.SpriteMaterial;
+              spriteMaterial.rotation = -controls.getAzimuthalAngle();
+            }
           });
     
-          // Update connections
           connections.forEach((line, i) => {
             const positions = new Float32Array([
               nodes[i].position.x, nodes[i].position.y, nodes[i].position.z,
@@ -149,12 +196,11 @@ export default function HomeScene() {
             line.geometry.attributes.position.needsUpdate = true;
           });
     
-          // Animate lights
           const time = Date.now() * 0.001;
-          pointLight1.position.x = Math.sin(time * 0.7) * 15;
-          pointLight1.position.y = Math.cos(time * 0.5) * 15;
-          pointLight2.position.x = Math.cos(time * 0.3) * 15;
-          pointLight2.position.y = Math.sin(time * 0.5) * 15;
+          pointLight1.position.x = Math.sin(time * 0.7) * spacing.spread;
+          pointLight1.position.y = Math.cos(time * 0.5) * spacing.spread;
+          pointLight2.position.x = Math.cos(time * 0.3) * spacing.spread;
+          pointLight2.position.y = Math.sin(time * 0.5) * spacing.spread;
     
           controls.update();
           renderer.render(scene, camera);
@@ -162,16 +208,25 @@ export default function HomeScene() {
     
         animate();
     
-        // Handle window resize
         function handleResize() {
+          spacing = calculateSpacing();
           camera.aspect = window.innerWidth / window.innerHeight;
+          camera.position.z = spacing.cameraDistance;
           camera.updateProjectionMatrix();
           renderer.setSize(window.innerWidth, window.innerHeight);
+          
+          // Update particle positions
+          const positions = particlesGeometry.attributes.position.array as Float32Array;
+          for(let i = 0; i < particlesCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * spacing.particleSpread;
+            positions[i + 1] = (Math.random() - 0.5) * spacing.particleSpread;
+            positions[i + 2] = (Math.random() - 0.5) * spacing.particleSpread;
+          }
+          particlesGeometry.attributes.position.needsUpdate = true;
         }
     
         window.addEventListener('resize', handleResize);
     
-        // Cleanup
         return () => {
           window.removeEventListener('resize', handleResize);
           mountRef.current?.removeChild(renderer.domElement);
@@ -179,5 +234,5 @@ export default function HomeScene() {
         };
       }, []);
     
-      return <div ref={mountRef} className="fixed inset-0 -z-10" />;
+      return <div ref={mountRef} className="fixed inset-0 z-10" />;
 }
