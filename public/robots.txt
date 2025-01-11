@@ -1,0 +1,25 @@
+# robots.txt for portfolio website
+
+# Allow all crawlers
+User-agent: *
+
+# Allow all content
+Allow: /
+
+# Disallow administrative and utility pages
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /login
+Disallow: /signup
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# Optional: Add crawl delay (in seconds) to prevent server overload
+Crawl-delay: 10
+
+# Sitemap location (update with your actual sitemap URL)
+Sitemap: https://your-domain.com/sitemap.xml
