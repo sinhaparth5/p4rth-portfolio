@@ -5,9 +5,34 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { HeadersFunction, LinksFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 
 import "./tailwind.css";
+import { crsfToken, generateToken, securityHeaders } from "./utils/security.server";
+
+export const headers: HeadersFunction = () => {
+  return {
+    ...securityHeaders
+  };
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const existingToken = await crsfToken.parse(request.headers.get("Cookie"));
+  
+  if (!existingToken) {
+    const newToken = await generateToken();
+    return json(
+      { csrf: newToken },
+      {
+        headers: {
+          "Set-Cookie": await crsfToken.serialize(newToken)
+        }
+      }
+    );
+  }
+  return json({ csrf: existingToken });
+}
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
