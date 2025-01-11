@@ -9,7 +9,7 @@ import type { HeadersFunction, LinksFunction, LoaderFunction } from "@remix-run/
 import { json } from "@remix-run/node";
 
 import "./tailwind.css";
-import { crsfToken, generateToken, securityHeaders } from "./utils/security.server";
+import { csrfToken, generateToken, securityHeaders } from "./utils/security.server";
 
 export const headers: HeadersFunction = () => {
   return {
@@ -18,7 +18,7 @@ export const headers: HeadersFunction = () => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const existingToken = await crsfToken.parse(request.headers.get("Cookie"));
+  const existingToken = await csrfToken.parse(request.headers.get("Cookie"));
   
   if (!existingToken) {
     const newToken = await generateToken();
@@ -26,7 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       { csrf: newToken },
       {
         headers: {
-          "Set-Cookie": await crsfToken.serialize(newToken)
+          "Set-Cookie": await csrfToken.serialize(newToken)
         }
       }
     );

@@ -2,7 +2,7 @@ import { createCookie } from "@remix-run/node";
 import crypto from 'crypto';
 
 // CRSF Token setup
-export const crsfToken = createCookie("csrf-token", {
+export const csrfToken = createCookie("csrf-token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
