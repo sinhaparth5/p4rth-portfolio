@@ -35,7 +35,7 @@ export default function Index() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <main className="min-h-screen text-white relative overflow-hidden">
+    <main className="min-h-screen text-white relative overflow-hidden bg-black">
       <div className="fixed inset-0 animated-bg" />
       <div className="fixed inset-0 bg-noise" />
       
