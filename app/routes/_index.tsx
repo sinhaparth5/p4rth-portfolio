@@ -1,6 +1,7 @@
 import { json, type MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { ClientOnly } from "remix-utils/client-only";
+import FloatingTechIcons from "~/components/FloatingIcons";
 import HomeScene from "~/components/HomeScene";
 
 export const meta: MetaFunction = () => {
@@ -38,6 +39,10 @@ export default function Index() {
       
       <ClientOnly fallback={<div className="fixed inset-0 bg-black" />}>
         {() => <HomeScene />}
+      </ClientOnly>
+
+      <ClientOnly>
+        {() => <FloatingTechIcons />}
       </ClientOnly>
 
       <div className="relative z-10">
@@ -82,7 +87,33 @@ export default function Index() {
           >
             Explore My Work
           </a>
+          <a
+              href="#contact"
+              className="px-8 py-3 rounded-full text-lg
+                       border-2 border-purple-500/50 hover:border-cyan-500/50
+                       transition-all duration-300 transform hover:scale-105
+                       shadow-lg hover:shadow-purple-500/25
+                       animate-fade-in backdrop-blur-sm"
+              style={{ animationDelay: '1200ms' }}
+            >
+              Get in Touch
+            </a>
         </div>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2
+                        animate-bounce animate-fade-in"
+               style={{ animationDelay: '1400ms' }}>
+            <svg
+              className="w-6 h-6 text-gray-300"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+          </div>
       </div>
     </main>
   );
