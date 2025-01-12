@@ -42,7 +42,7 @@ export default function BlogRoute() {
         <main className="psContainer">
             <div className="psBlogCon">
                 <div className="psBlogConInner">
-                    <h1 className="psHeaderText">Medium Articles</h1>
+                    <a href="/"><h1 className="psHeaderText">Medium Articles</h1></a>
 
                     { hasArticles ? (
                         <div className="psGrid">
