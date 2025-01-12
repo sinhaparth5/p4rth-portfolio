@@ -2,7 +2,7 @@ export default function CTAButtons() {
     return (
       <>
         <a
-          href="#about"
+          href="/blogs"
           className="mt-12 px-8 py-3 rounded-full text-lg
                    bg-gradient-to-r from-purple-600 to-cyan-600
                    hover:from-purple-500 hover:to-cyan-500

@@ -21,7 +21,7 @@ export const loader = async () => {
   const token = await generateToken();
 
   return json({
-    title: "AI & ML Developer",
+    title: "I'm Parth Sinha",
     description: "Passionate about AI, Machine Learning, and CUDA Programming",
     skills: [
       "Machine Learning",
@@ -57,7 +57,7 @@ export default function Index() {
 
   return (
     <>
-      <main className="min-h-screen text-white relative overflow-hidden bg-black">
+      <main className="min-h-screen text-white relative overflow-hidden">
         <div className="fixed inset-0 animated-bg" />
         <div className="fixed inset-0 bg-noise" />
         
@@ -73,6 +73,7 @@ export default function Index() {
             <ScrollIndicator />
           </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-black/80 backdrop-blur-xl" />
       </main>
       <Contact />
     </>

@@ -224,4 +224,21 @@ article:hover {
       cursor: auto;
     }
   }
+
+  .blur-overlay {
+    mask-image: linear-gradient(to bottom, 
+      transparent,
+      rgba(0, 0, 0, 0.2) 15%,
+      rgba(0, 0, 0, 0.5) 30%,
+      rgba(0, 0, 0, 0.8) 50%,
+      rgba(0, 0, 0, 1) 70%
+    );
+    -webkit-mask-image: linear-gradient(to bottom,
+      transparent,
+      rgba(0, 0, 0, 0.2) 15%,
+      rgba(0, 0, 0, 0.5) 30%,
+      rgba(0, 0, 0, 0.8) 50%,
+      rgba(0, 0, 0, 1) 70%
+    );
+  }
 }

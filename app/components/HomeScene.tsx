@@ -254,5 +254,5 @@ export default function HomeScene() {
         };
       }, []);
     
-      return <div ref={mountRef} className="fixed inset-0 z-10" />;
+      return <div ref={mountRef} className="absolute inset-0 z-10" />;
 }
