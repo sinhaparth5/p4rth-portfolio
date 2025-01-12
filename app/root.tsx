@@ -10,6 +10,8 @@ import { json } from "@remix-run/node";
 
 import "./tailwind.css";
 import { csrfToken, generateToken, securityHeaders } from "./utils/security.server";
+import { ClientOnly } from "remix-utils/client-only";
+import CustomCursor from "./components/Cursor";
 
 export const headers: HeadersFunction = () => {
   return {
@@ -57,6 +59,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <ClientOnly>
+          {() => <CustomCursor />}
+        </ClientOnly>
         {children}
         <ScrollRestoration />
         <Scripts />
