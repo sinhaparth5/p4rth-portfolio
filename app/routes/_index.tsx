@@ -56,24 +56,26 @@ export default function Index() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <main className="min-h-screen text-white relative overflow-hidden bg-black">
-      <div className="fixed inset-0 animated-bg" />
-      <div className="fixed inset-0 bg-noise" />
-      
-      <ClientOnly fallback={<div className="fixed inset-0 bg-black" />}>
-        {() => <HomeScene />}
-      </ClientOnly>
+    <>
+      <main className="min-h-screen text-white relative overflow-hidden bg-black">
+        <div className="fixed inset-0 animated-bg" />
+        <div className="fixed inset-0 bg-noise" />
+        
+        <ClientOnly fallback={<div className="fixed inset-0 bg-black" />}>
+          {() => <HomeScene />}
+        </ClientOnly>
 
-      <div className="relative z-10">
-        <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-          <Hero title={data.title} description={data.description} />
-          <Skills skills={data.skills} />
-          <CTAButtons />
-          <ScrollIndicator />
+        <div className="relative z-10">
+          <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+            <Hero title={data.title} description={data.description} />
+            <Skills skills={data.skills} />
+            <CTAButtons />
+            <ScrollIndicator />
+          </div>
         </div>
-      </div>
+      </main>
       <Contact />
-    </main>
+    </>
   );
 }
 
