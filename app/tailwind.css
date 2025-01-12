@@ -59,6 +59,17 @@ body {
   .psHeaderText {
     @apply text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl;
   }
+
+  .cursor-normal {
+    filter: hue-rotate(0deg);
+    transform: scale(1);
+  }
+
+  .cursor-hover {
+    /* This will make it red */
+    filter: hue-rotate(140deg) saturate(150%);
+    transform: scale(1.1);
+  }
 }
 
 /* Glass tag styles */
