@@ -35,6 +35,12 @@ export default function ArticlesSection({ articles }: ArticlesSectionProps) {
                        transition-all duration-500 hover:border-pink-500/50 
                        hover:shadow-xl hover:shadow-pink-500/10"
             >
+
+              {/* Title */}
+              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-pink-400 transition-colors line-clamp-2">
+                {article.title}
+              </h3>
+
               {/* Categories */}
               <div className="flex flex-wrap items-center gap-2 mb-4">
                 {article.categories.map(category => (
@@ -46,11 +52,6 @@ export default function ArticlesSection({ articles }: ArticlesSectionProps) {
                   </span>
                 ))}
               </div>
-
-              {/* Title */}
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-pink-400 transition-colors line-clamp-2">
-                {article.title}
-              </h3>
 
               {/* Date & Read More */}
               <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-800/50">
