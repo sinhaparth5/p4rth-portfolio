@@ -197,4 +197,20 @@ article:hover {
       transform: translateY(0px);
     }
   }
+
+
+  a, button, input, textarea, select {
+    cursor: none;
+  }
+
+  /* Show default cursor on touch devices */
+  @media (hover: none) {
+    .custom-cursor {
+      display: none;
+    }
+    
+    a, button, input, textarea, select {
+      cursor: auto;
+    }
+  }
 }
