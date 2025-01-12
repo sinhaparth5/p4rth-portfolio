@@ -4,3 +4,10 @@ profile:
   name: qodana.recommended
 include:
   - name: CheckDependencyLicenses
+exclude:
+  - name: All
+    paths:
+    - .eslintrc.cjs
+    - .postcss.config.js
+    - tailwind.config.ts
+    - vite.config.ts
