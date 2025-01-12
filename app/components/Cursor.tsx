@@ -34,7 +34,7 @@ export default function CustomCursor() {
   return (
     <div 
       ref={cursorRef}
-      className="fixed pointer-events-none z-50 transition-all duration-150 ease-out"
+      className="fixed pointer-events-none z-[1000] transition-all duration-150 ease-out"
     >
       <img 
         src="/cursor/cursor.svg" 
