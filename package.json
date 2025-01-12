@@ -11,8 +11,6 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@emailjs/browser": "^4.4.1",
-    "@emailjs/nodejs": "^5.0.2",
     "@remix-run/node": "^2.15.2",
     "@remix-run/react": "^2.15.2",
     "@remix-run/serve": "^2.15.2",
