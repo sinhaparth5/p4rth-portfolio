@@ -1,8 +1,23 @@
-// app/routes/projects.tsx
 import { json, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { getPublicRepositories } from "~/services/github.server";
+
+interface Repository {
+  id: number;
+  name: string;
+  description: string | null;
+  url: string;
+  stars: number;
+  language: string | null;
+  topics: string[];
+  updatedAt: string;
+}
+
+interface LoaderData {
+  repositories: Repository[];
+}
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,7 +32,7 @@ export const loader = async () => {
   const username = "sinhaparth5";
   const repositories = await getPublicRepositories(username);
 
-  return json(
+  return json<LoaderData>(
     { repositories },
     {
       headers: {
@@ -28,56 +43,57 @@ export const loader = async () => {
 };
 
 export default function ProjectsRoute() {
-  const { repositories } = useLoaderData<typeof loader>();
+  const { repositories } = useLoaderData<LoaderData>();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const headerRef = useRef<HTMLDivElement>(null);
-  const projectsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const loadGSAP = async () => {
-      try {
-        const { default: gsap } = await import("gsap");
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
 
-        // Header animation on page load
-        gsap.from(headerRef.current, {
-          y: -100,
-          opacity: 0,
-          duration: 1,
-          ease: "power4.out",
-        });
+  const headerVariants = {
+    hidden: { y: -50, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  };
 
-        // Filter buttons animation on page load
-        gsap.from(".filter-btn", {
-          y: 50,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "power2.out",
-          delay: 0.5,
-        });
+  const buttonVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  };
 
-        // Projects animation on page load (no scroll trigger)
-        const projects = projectsRef.current?.querySelectorAll<HTMLElement>(".project-card");
-        if (projects && projects.length > 0) {
-          gsap.from(projects, {
-            y: 100,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.2,
-            ease: "power3.out",
-            onComplete: () => {
-              // Ensure the opacity is set to 1 after the animation completes
-              gsap.set(projects, { opacity: 1 });
-            },
-          });
-        }
-      } catch (error) {
-        console.error("Error loading GSAP:", error);
-      }
-    };
-
-    loadGSAP();
-  }, []);
+  const cardVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  };
 
   const filteredProjects = selectedCategory === "All"
     ? repositories
@@ -95,9 +111,17 @@ export default function ProjectsRoute() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-black to-gray-900">
+    <motion.main
+      className="min-h-screen bg-gradient-to-b from-black to-gray-900"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
       {/* Header Section */}
-      <div ref={headerRef} className="relative py-20 px-4 text-center">
+      <motion.div 
+        className="relative py-20 px-4 text-center"
+        variants={headerVariants}
+      >
         <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-6">
           Featured Projects
         </h1>
@@ -108,29 +132,42 @@ export default function ProjectsRoute() {
         {/* Category Filters */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           {categories.map((category) => (
-            <button
+            <motion.button
               key={category}
+              variants={buttonVariants}
               onClick={() => setSelectedCategory(category)}
-              className={`filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 selectedCategory === category
                   ? "bg-cyan-500 text-white"
                   : "bg-gray-800/50 text-gray-300 hover:bg-gray-700/50"
               }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               {category}
-            </button>
+            </motion.button>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Projects Grid */}
-      <div ref={projectsRef} className="max-w-7xl mx-auto px-4 pb-20">
-        {filteredProjects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 pb-20">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedCategory}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+          >
             {filteredProjects.map((repo) => (
-              <article
+              <motion.article
                 key={repo.id}
-                className="project-card bg-black/30 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-800/50 transition-all duration-500 hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/10 group"
+                variants={cardVariants}
+                layout
+                className="bg-black/30 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-800/50 transition-all duration-500 hover:border-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/10 group"
+                whileHover={{ y: -5 }}
               >
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
@@ -171,31 +208,39 @@ export default function ProjectsRoute() {
 
                   <div className="flex items-center justify-between pt-4 border-t border-gray-800/50">
                     <span className="text-gray-500 text-sm">{formatDate(repo.updatedAt)}</span>
-                    <a
+                    <motion.a
                       href={repo.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-2"
+                      whileHover={{ x: 5 }}
                     >
                       View Project
                       <svg
-                        className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+                        className="w-4 h-4"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
-                    </a>
+                    </motion.a>
                   </div>
                 </div>
-              </article>
+              </motion.article>
             ))}
-          </div>
-        ) : (
-          <p className="text-gray-400 text-center">No projects found in this category.</p>
+          </motion.div>
+        </AnimatePresence>
+        {filteredProjects.length === 0 && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-gray-400 text-center"
+          >
+            No projects found in this category.
+          </motion.p>
         )}
       </div>
-    </main>
+    </motion.main>
   );
 }
