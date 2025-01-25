@@ -12,6 +12,7 @@ import "./tailwind.css";
 import { csrfToken, generateToken, securityHeaders } from "./utils/security.server";
 import { ClientOnly } from "remix-utils/client-only";
 import CustomCursor from "./components/Cursor";
+import { SpeedInsights } from "@vercel/speed-insights/remix";
 
 export const headers: HeadersFunction = () => {
   return {
@@ -63,6 +64,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {() => <CustomCursor />}
         </ClientOnly>
         {children}
+        <SpeedInsights />
         <ScrollRestoration />
         <Scripts />
       </body>
