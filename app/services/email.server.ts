@@ -7,6 +7,12 @@ const resend = new Resend(import.meta.env.VITE_RESEND_API_KEY);
 
 export async function sendEmail(formData: FormData, request: Request) {
     try {
+        // Check honeypot field
+        const honeypot = formData.get('phone')
+        if (honeypot) {
+          return { success: true };
+        }
+        
         // Verify CSRF token
         const formToken = formData.get('csrf');
         const cookieToken = await csrfToken.parse(request.headers.get("Cookie"));

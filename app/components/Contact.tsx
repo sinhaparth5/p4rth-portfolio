@@ -28,6 +28,12 @@ export default function Contact() {
         >
           <input type="hidden" name="csrf" value={csrf} />
 
+          {/* Honeypot field - hidden from real users but visible to bots */}
+          
+          <div className="hidden" aria-hidden="true">
+            <input type="text" name="phone" id="phone" tabIndex={-1} autoComplete="off" style={{ display: 'none' }} />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="name" className="block text-gray-300 mb-2">
