@@ -1,0 +1,8 @@
+/target
+/Cargo.lock.DS_Store
+__pycache__/
+*.pyc
+*.swp
+*~.env  # If you have environment variables.venv # If you use a virtual environment
+/node_modules # If you have any Node.js dependencies
+/dist # If you have a dist folder for your build

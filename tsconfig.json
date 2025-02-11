@@ -23,7 +23,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@wasm/*": ["./wasm/pkg/*"]
     },
 
     // Vite takes care of building everything, not tsc.

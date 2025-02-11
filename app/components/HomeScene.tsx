@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import init, { Scene3D } from '@wasm/wasm';
 
 const techIcons = [
   { name: 'django', size: 1.2 },
