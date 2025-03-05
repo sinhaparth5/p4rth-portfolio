@@ -5,6 +5,7 @@ import AboutSection from "~/components/AboutUs";
 import ArticlesSection from "~/components/ArticlesSection";
 import Contact from "~/components/Contact";
 import CTAButtons from "~/components/CTAButton";
+import Footer from "~/components/Footer";
 import Hero from "~/components/Hero";
 import HomeScene from "~/components/HomeScene";
 import ProjectsSection from "~/components/ProjectSection";
@@ -100,6 +101,7 @@ export default function Index() {
       <ArticlesSection articles={data.articles} />
       <ProjectsSection repositories={data.repositories} />
       <Contact />
+      <Footer />
     </>
   );
 }
