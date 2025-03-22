@@ -49,7 +49,7 @@ export const meta: MetaFunction = () => [
   { property: "og:url", content: "https://parthsinha.com" },
   {
     property: "og:image",
-    content: "https://r2.astrareconslabs.com/ai-generated-8094691_640.webp",
+    content: "https://r2.astrareconslabs.com/ai-generated-8417159_640.webp",
   },
   { property: "og:image:alt", content: "Parth Sinha" },
   { property: "og:site_name", content: "Parth Sinha" },
