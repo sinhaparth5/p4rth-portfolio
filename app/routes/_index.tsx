@@ -15,12 +15,64 @@ import { getPublicRepositories } from "~/services/github.server";
 import { getMediumArticles } from "~/services/medium.server";
 import { csrfToken, generateToken } from "~/utils/security.server";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "P4rth" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
-};
+export const meta: MetaFunction = () => [
+  // Basic Meta Tags
+  { charset: "utf-8" },
+  { name: "viewport", content: "width=device-width, initial-scale=1" },
+  {
+    name: "description",
+    content:
+      "I'm a student and junior developer intern passionate about Svelte, AI, and machine learning. Explore my journey in coding and research!",
+  },
+  {
+    name: "keywords",
+    content:
+      "junior developer, software enginerr, AI, machine learning, computer science student",
+  },
+  { name: "author", content: "Parth Sinha" },
+  { name: "robots", content: "index, follow" },
+
+  // Title (default for all pages unless overridden)
+  { title: "P4rth" },
+
+  // Open Graph Meta Tags
+  {
+    property: "og:title",
+    content: "Parth Sinha | Student & Junior Developer in AI/ML",
+  },
+  {
+    property: "og:description",
+    content:
+      "A student and junior developer intern exploring Full stack web development, AI, and machine learning through coding and research.",
+  },
+  { property: "og:type", content: "website" },
+  { property: "og:url", content: "https://parthsinha.com" },
+  {
+    property: "og:image",
+    content: "https://r2.astrareconslabs.com/ai-generated-8094691_640.webp",
+  },
+  { property: "og:image:alt", content: "Parth Sinha" },
+  { property: "og:site_name", content: "Parth Sinha" },
+
+  // Twitter Card Meta Tags
+  { name: "twitter:card", content: "summary_large_image" },
+  { name: "twitter:title", content: "Parth Sinha" },
+  {
+    name: "twitter:description",
+    content:
+      "Discover my work as a junior developer intern and my passion for AI/ML and computer science research.",
+  },
+  {
+    name: "twitter:image",
+    content: "https://pbs.twimg.com/profile_images/1615716904844333062/-7ja18HM_400x400.jpg",
+  },
+  { name: "twitter:creator", content: "@sinhaparth555" },
+
+  // Additional Useful Meta Tags
+  { name: "theme-color", content: "#ff3e00" },
+  { name: "application-name", content: "Parth Sinha" },
+  { name: "format-detection", content: "telephone=no" },
+];
 
 export const loader = async () => {
   const username = "sinhaparth5";
