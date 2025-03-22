@@ -64,7 +64,7 @@ export const meta: MetaFunction = () => [
   },
   {
     name: "twitter:image",
-    content: "https://pbs.twimg.com/profile_images/1615716904844333062/-7ja18HM_400x400.jpg",
+    content: "https://r2.astrareconslabs.com/ai-generated-8750176_640.webp",
   },
   { name: "twitter:creator", content: "@sinhaparth555" },
 
