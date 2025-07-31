@@ -7,6 +7,7 @@ import {
 } from "@remix-run/react";
 import type { HeadersFunction, LinksFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import { Analytics } from "@vercel/analytics/remix";
 
 import "./tailwind.css";
 import { csrfToken, generateToken, securityHeaders } from "./utils/security.server";
@@ -65,6 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </ClientOnly>
         {children}
         <SpeedInsights />
+        <Analytics />
         <ScrollRestoration />
         <Scripts />
       </body>
