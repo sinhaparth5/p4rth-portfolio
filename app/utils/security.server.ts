@@ -1,7 +1,6 @@
 import { createCookie } from "@remix-run/node";
 import crypto from 'crypto';
 
-// CRSF Token setup
 export const csrfToken = createCookie("csrf-token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -9,21 +8,19 @@ export const csrfToken = createCookie("csrf-token", {
     path: "/",
 });
 
-//Generate CSRF Token
 export async function generateToken() {
     const token = crypto.randomBytes(32).toString("hex");
     return token;
 }
 
-// Strong Security Headers
 export const securityHeaders = {
     "Content-Security-Policy":
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; " +
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "img-src 'self' data: blob: https:; " +
     "font-src 'self' https://fonts.gstatic.com; " +
-    "connect-src 'self' https://api.github.com https://medium.com; " +
+    "connect-src 'self' https://api.github.com https://medium.com https://cloudflareinsights.com; " +
     "frame-ancestors 'none';",
     "X-Frame-Options": "DENY",
     "X-Content-Type-Options": "nosniff",

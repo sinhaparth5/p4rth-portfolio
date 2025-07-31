@@ -16,7 +16,6 @@ import { getMediumArticles } from "~/services/medium.server";
 import { csrfToken, generateToken } from "~/utils/security.server";
 
 export const meta: MetaFunction = () => [
-  // Basic Meta Tags
   { charset: "utf-8" },
   { name: "viewport", content: "width=device-width, initial-scale=1" },
   {
